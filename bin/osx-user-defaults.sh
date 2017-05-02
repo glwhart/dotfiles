@@ -9,13 +9,15 @@
 # Hannes Juutilainen <hjuutilainen@mac.com>
 # ==============================================
 
+### Adapted by Gus Hart, May 2017 (Yosemite)
 
-function CFPreferencesAppSynchronize() {
-    python - <<END
-from Foundation import CFPreferencesAppSynchronize
-CFPreferencesAppSynchronize('$1')
-END
-}
+##GH Don't know what this does
+##GHfunction CFPreferencesAppSynchronize() {
+##GH    python - <<END
+##GHfrom Foundation import CFPreferencesAppSynchronize
+##GHCFPreferencesAppSynchronize('$1')
+##GHEND
+##GH}
 
 # ==============================================
 # Files and folders

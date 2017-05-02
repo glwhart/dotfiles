@@ -9,12 +9,14 @@
 # Hannes Juutilainen <hjuutilainen@mac.com>
 # ==============================================
 
+### Adapted by Gus Hart, May 2017 (Yosemite)
+
 # ==============================================
 # Date & Time
 # ==============================================
 
-/usr/sbin/systemsetup -settimezone "Europe/Helsinki"
-/usr/sbin/systemsetup -setnetworktimeserver "time.euro.apple.com"
+/usr/sbin/systemsetup -settimezone "America/Denver"
+/usr/sbin/systemsetup -setnetworktimeserver "time.apple.com"
 /usr/sbin/systemsetup -setusingnetworktime on
 
 
@@ -22,31 +24,33 @@
 # Set energy preferences
 # ==============================================
 
-# From <https://github.com/rtrouton/rtrouton_scripts/>
-IS_LAPTOP=`/usr/sbin/system_profiler SPHardwareDataType | grep "Model Identifier" | grep "Book"`
-if [[ "$IS_LAPTOP" != "" ]]; then
-    pmset -b sleep 15 disksleep 10 displaysleep 5 halfdim 1
-    pmset -c sleep 0 disksleep 0 displaysleep 30 halfdim 1
-else
-    pmset sleep 0 disksleep 0 displaysleep 30 halfdim 1
-fi
+##GH# From <https://github.com/rtrouton/rtrouton_scripts/>
+##GHIS_LAPTOP=`/usr/sbin/system_profiler SPHardwareDataType | grep "Model Identifier" | grep "Book"`
+##GHif [[ "$IS_LAPTOP" != "" ]]; then
+##GH    pmset -b sleep 15 disksleep 10 displaysleep 5 halfdim 1
+##GH    pmset -c sleep 0 disksleep 0 displaysleep 30 halfdim 1
+##GHelse
+##GH    pmset sleep 0 disksleep 0 displaysleep 30 halfdim 1
+##GHfi
 
 
-# ==============================================
-# Application layer firewall
-# ==============================================
+##GH Not really sure what to do with the ALF stuff...
 
-# Enable ALF
-defaults write /Library/Preferences/com.apple.alf globalstate -int 1
-
-# Allow signed apps
-defaults write /Library/Preferences/com.apple.alf allowsignedenabled -bool true
-
-# Enable logging
-defaults write /Library/Preferences/com.apple.alf loggingenabled -bool true
-
-# Disable stealth mode
-defaults write /Library/Preferences/com.apple.alf stealthenabled -bool false
+##GH# ==============================================
+##GH# Application layer firewall
+##GH# ==============================================
+##GH
+##GH# Enable ALF
+##GHdefaults write /Library/Preferences/com.apple.alf globalstate -int 1
+##GH
+##GH# Allow signed apps
+##GHdefaults write /Library/Preferences/com.apple.alf allowsignedenabled -bool true
+##GH
+##GH# Enable logging
+##GHdefaults write /Library/Preferences/com.apple.alf loggingenabled -bool true
+##GH
+##GH# Disable stealth mode
+##GHdefaults write /Library/Preferences/com.apple.alf stealthenabled -bool false
 
 
 # ==============================================
@@ -71,21 +75,24 @@ defaults write /Library/Preferences/com.apple.loginwindow SHOWFULLNAME -bool tru
 # Show shut down etc. buttons
 defaults write /Library/Preferences/com.apple.loginwindow PowerOffDisabled -bool false
 
-# Don't show any password hints
-defaults write /Library/Preferences/com.apple.loginwindow RetriesUntilHint -int 0
+##GH # Show input menu on login (so you can tell if it's dvorak or not
+defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool true
 
-# Allow fast user switching
-defaults write /Library/Preferences/.GlobalPreferences MultipleSessionEnabled -bool true
+##GH Show any password hints
+defaults write /Library/Preferences/com.apple.loginwindow RetriesUntilHint -int 1
 
-# Hide users with UID under 500
-defaults write /Library/Preferences/com.apple.loginwindow Hide500Users -bool YES
+##GH# Allow fast user switching
+##GHdefaults write /Library/Preferences/.GlobalPreferences MultipleSessionEnabled -bool true
+
+##GH# Hide users with UID under 500
+##GHdefaults write /Library/Preferences/com.apple.loginwindow Hide500Users -bool YES
 
 
 # ==============================================
 # Set keyboard preferences
 # ==============================================
-defaults write /Library/Preferences/com.apple.HIToolbox AppleCurrentKeyboardLayoutInputSourceID "com.apple.keylayout.Finnish"
-defaults write /Library/Preferences/com.apple.HIToolbox AppleDefaultAsciiInputSource -dict InputSourceKind "Keyboard Layout" "KeyboardLayout ID" -int 17 "KeyboardLayout Name" Finnish
+defaults write /Library/Preferences/com.apple.HIToolbox AppleCurrentKeyboardLayoutInputSourceID "com.apple.keylayout.US"
+##GH defaults write /Library/Preferences/com.apple.HIToolbox AppleDefaultAsciiInputSource -dict InputSourceKind "Keyboard Layout" "KeyboardLayout ID" -int 17 "KeyboardLayout Name" Finnish
 
 # Delete the default layouts (US)
 defaults delete /Library/Preferences/com.apple.HIToolbox AppleEnabledInputSources

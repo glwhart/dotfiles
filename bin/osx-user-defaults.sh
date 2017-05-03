@@ -11,13 +11,13 @@
 
 ### Adapted by Gus Hart, May 2017 (Yosemite)
 
-##GH Don't know what this does
-##GHfunction CFPreferencesAppSynchronize() {
-##GH    python - <<END
-##GHfrom Foundation import CFPreferencesAppSynchronize
-##GHCFPreferencesAppSynchronize('$1')
-##GHEND
-##GH}
+# 
+function CFPreferencesAppSynchronize() {
+    python - <<END
+from Foundation import CFPreferencesAppSynchronize
+CFPreferencesAppSynchronize('$1')
+END
+}
 
 # ==============================================
 # Files and folders
@@ -35,38 +35,45 @@ chflags hidden "${HOME}/bin"
 # ==============================================
 echo "Setting NSGlobalDomain preferences"
 
-# Locale
-defaults write NSGlobalDomain AppleLocale -string "fi_FI"
-defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
-defaults write NSGlobalDomain AppleMetricUnits -bool true
+##GH# Locale
+##GHdefaults write NSGlobalDomain AppleLocale -string "fi_FI"
+##GHdefaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
+##GHdefaults write NSGlobalDomain AppleMetricUnits -bool true
 
-# 24-Hour Time
-defaults write NSGlobalDomain AppleICUForce12HourTime -bool false
+##GH# 24-Hour Time
+##GHdefaults write NSGlobalDomain AppleICUForce12HourTime -bool false
 
-# Turn off text smoothing for font sizes
-defaults write NSGlobalDomain AppleAntiAliasingThreshold -int 4
+##GH# Turn off text smoothing for font sizes
+##GHdefaults write NSGlobalDomain AppleAntiAliasingThreshold -int 4
 
-# Double-click a window's title bar to minimize
-defaults write NSGlobalDomain AppleMiniaturizeOnDoubleClick -bool false
+##GH# Double-click a window's title bar to minimize
+##GHdefaults write NSGlobalDomain AppleMiniaturizeOnDoubleClick -bool false
 
-# Use smooth scrolling
-defaults write NSGlobalDomain AppleScrollAnimationEnabled -bool true
+##GH# Use smooth scrolling
+##GHdefaults write NSGlobalDomain AppleScrollAnimationEnabled -bool true
 
-# Enable key repeat
-defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+##GH# Enable key repeat
+##GHdefaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
-# Set keyboard repeat rate
-defaults write NSGlobalDomain KeyRepeat -int 2
+# Speed up the key repeat rate higher than what SystemSettings allows
+# 2 is the fastest in the systems settings (larger numbers slower)
+defaults write -g KeyRepeat -float 1.5
+# shorten the delay until repeat
+defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
 
-# Don't restore windows when quitting or re-opening apps
-defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool false
+
+# All controls (Full Keyboard Access)
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+##GH# Don't restore windows when quitting or re-opening apps
+##GHdefaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool false
 
 # Disable smart quotes and dashes
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 
-# Correct spelling automatically
-defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool true
+##GH# Correct spelling automatically
+##GHdefaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool true
 
 # Sidebar icon size: Small
 defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
@@ -87,9 +94,16 @@ defaults write com.apple.screensaver askForPasswordDelay -int 5
 # Screen Saver: Flurry
 defaults -currentHost write com.apple.screensaver moduleDict -dict moduleName -string "Flurry" path -string "/System/Library/Screen Savers/Flurry.saver" type -int 0
 
-# Hot corners -> bottom left -> start screen saver
-defaults write com.apple.dock "wvous-bl-corner" -int 5
-defaults write com.apple.dock "wvous-bl-modifier" -int 0
+##GH# Hot corners -> bottom left -> start screen saver
+##GHdefaults write com.apple.dock "wvous-bl-corner" -int 5
+##GHdefaults write com.apple.dock "wvous-bl-modifier" -int 0
+
+# Reduce transparency of windows
+defaults write com.apple.universalaccess reduceTransparency -bool true
+
+# Show percentage in battery icon on menu bar
+defaults write com.apple.menuextra.battery ShowPercent YES
+
 
 
 # ==============================================
@@ -98,27 +112,27 @@ defaults write com.apple.dock "wvous-bl-modifier" -int 0
 echo "Setting Mouse preferences"
 
 # Set scroll direction
-defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+defaults write NSGlobalDomain com.apple.swipescrolldirection -bool true
 
 # Secondary click:
 # Possible values: OneButton, TwoButton, TwoButtonSwapped
 defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonMode -string TwoButton
 
-# Smart zoom enabled, double-tap with one finger (set to 0 to disable)
-defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseOneFingerDoubleTapGesture -int 1
+##GH# Smart zoom enabled, double-tap with one finger (set to 0 to disable)
+##GHdefaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseOneFingerDoubleTapGesture -int 1
 
-# Double-tap with two fingers to Mission Control (set to 0 to disable)
-defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseTwoFingerDoubleTapGesture -int 3
+##GH# Double-tap with two fingers to Mission Control (set to 0 to disable)
+##GHdefaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseTwoFingerDoubleTapGesture -int 3
 
 # Two finger horizontal swipe
 # 0 = Swipe between pages with one finger
 # 1 = Swipe between pages
 # 2 = Swipe between full screen apps with two fingers, swipe between pages with one finger (Default Mode)
-defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseTwoFingerHorizSwipeGesture -int 2
+defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseTwoFingerHorizSwipeGesture -int 1
 
-defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseVerticalScroll -int 1
-defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseMomentumScroll -int 1
-defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseHorizontalScroll -int 1
+##GHdefaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseVerticalScroll -int 1
+##GHdefaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseMomentumScroll -int 1
+##GHdefaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseHorizontalScroll -int 1
 
 
 # ==============================================
@@ -135,14 +149,14 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightC
 # Enable three finger tap (look up)
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerTapGesture -int 2
 
-# Disable three finger drag
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool false
+##GH# Disable three finger drag
+##GHdefaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool false
 
 # Zoom in or out
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadPinch -bool true
 
-# Smart zoom, double-tap with two fingers
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadTwoFingerDoubleTapGesture -bool true
+##GH# Smart zoom, double-tap with two fingers
+##GHdefaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadTwoFingerDoubleTapGesture -bool true
 
 # Rotate
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRotate -bool true
@@ -169,66 +183,66 @@ defaults write com.apple.dock showDesktopGestureEnabled -bool true
 defaults write com.apple.dock showLaunchpadGestureEnabled -bool true
 
 
-# ==============================================
-# Activity Monitor
-# ==============================================
-echo "Setting Activity Monitor preferences"
+##GH# ==============================================
+##GH# Activity Monitor
+##GH# ==============================================
+##GHecho "Setting Activity Monitor preferences"
+##GH
+##GH# Show main window on launch
+##GHdefaults write com.apple.ActivityMonitor OpenMainWindow -bool true
+##GH
+##GH# Dock icon = CPU Usage
+##GHdefaults write com.apple.ActivityMonitor IconType -int 5
+##GH
+##GH# Show all processes
+##GHdefaults write com.apple.ActivityMonitor ShowCategory -int 100
+##GH
+##GH# Mountain Lion: Sort by CPU usage
+##GHdefaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
+##GHdefaults write com.apple.ActivityMonitor SortDirection -int 0
+##GH
+##GH# Mavericks: Add the "% CPU" column to the Disk and Network tabs
+##GHdefaults write com.apple.ActivityMonitor "UserColumnsPerTab v4.0" -dict \
+##GH    '0' '( Command, CPUUsage, CPUTime, Threads, IdleWakeUps, PID, UID )' \
+##GH    '1' '( Command, anonymousMemory, Threads, Ports, PID, UID, ResidentSize )' \
+##GH    '2' '( Command, PowerScore, 12HRPower, AppSleep, graphicCard, UID )' \
+##GH    '3' '( Command, bytesWritten, bytesRead, Architecture, PID, UID, CPUUsage )' \
+##GH    '4' '( Command, txBytes, rxBytes, txPackets, rxPackets, PID, UID, CPUUsage )'
+##GH
+##GH# Mavericks: Sort by CPU usage in Disk and Network tabs
+##GHdefaults write com.apple.ActivityMonitor UserColumnSortPerTab -dict \
+##GH    '0' '{ direction = 0; sort = CPUUsage; }' \
+##GH    '1' '{ direction = 0; sort = ResidentSize; }' \
+##GH    '2' '{ direction = 0; sort = 12HRPower; }' \
+##GH    '3' '{ direction = 0; sort = CPUUsage; }' \
+##GH    '4' '{ direction = 0; sort = CPUUsage; }'
+##GH
+##GH# Select the Network tab
+##GHdefaults write com.apple.ActivityMonitor SelectedTab -int 4
+##GH
+##GH# Update Frequency: Often (2 sec)
+##GHdefaults write com.apple.ActivityMonitor UpdatePeriod -int 2
+##GH
+##GH# Mavericks: Show Data in the Disk graph (instead of IO)
+##GHdefaults write com.apple.ActivityMonitor DiskGraphType -int 1
+##GH
+##GH# Mavericks: Show Data in the Network graph (instead of packets)
+##GHdefaults write com.apple.ActivityMonitor NetworkGraphType -int 1
 
-# Show main window on launch
-defaults write com.apple.ActivityMonitor OpenMainWindow -bool true
 
-# Dock icon = CPU Usage
-defaults write com.apple.ActivityMonitor IconType -int 5
-
-# Show all processes
-defaults write com.apple.ActivityMonitor ShowCategory -int 100
-
-# Mountain Lion: Sort by CPU usage
-defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
-defaults write com.apple.ActivityMonitor SortDirection -int 0
-
-# Mavericks: Add the "% CPU" column to the Disk and Network tabs
-defaults write com.apple.ActivityMonitor "UserColumnsPerTab v4.0" -dict \
-    '0' '( Command, CPUUsage, CPUTime, Threads, IdleWakeUps, PID, UID )' \
-    '1' '( Command, anonymousMemory, Threads, Ports, PID, UID, ResidentSize )' \
-    '2' '( Command, PowerScore, 12HRPower, AppSleep, graphicCard, UID )' \
-    '3' '( Command, bytesWritten, bytesRead, Architecture, PID, UID, CPUUsage )' \
-    '4' '( Command, txBytes, rxBytes, txPackets, rxPackets, PID, UID, CPUUsage )'
-
-# Mavericks: Sort by CPU usage in Disk and Network tabs
-defaults write com.apple.ActivityMonitor UserColumnSortPerTab -dict \
-    '0' '{ direction = 0; sort = CPUUsage; }' \
-    '1' '{ direction = 0; sort = ResidentSize; }' \
-    '2' '{ direction = 0; sort = 12HRPower; }' \
-    '3' '{ direction = 0; sort = CPUUsage; }' \
-    '4' '{ direction = 0; sort = CPUUsage; }'
-
-# Select the Network tab
-defaults write com.apple.ActivityMonitor SelectedTab -int 4
-
-# Update Frequency: Often (2 sec)
-defaults write com.apple.ActivityMonitor UpdatePeriod -int 2
-
-# Mavericks: Show Data in the Disk graph (instead of IO)
-defaults write com.apple.ActivityMonitor DiskGraphType -int 1
-
-# Mavericks: Show Data in the Network graph (instead of packets)
-defaults write com.apple.ActivityMonitor NetworkGraphType -int 1
-
-
-# ==============================================
-# Contacts (Address Book)
-# ==============================================
-echo "Setting Contacts preferences"
-
-# Address format
-defaults write com.apple.AddressBook ABDefaultAddressCountryCode -string "fi"
-
-# Display format "Last, First"
-defaults write com.apple.AddressBook ABNameDisplay -int 1
-
-# Sort by last name
-defaults write com.apple.AddressBook ABNameSortingFormat -string "sortingLastName sortingFirstName"
+##GH# ==============================================
+##GH# Contacts (Address Book)
+##GH# ==============================================
+##GHecho "Setting Contacts preferences"
+##GH
+##GH# Address format
+##GHdefaults write com.apple.AddressBook ABDefaultAddressCountryCode -string "fi"
+##GH
+##GH# Display format "Last, First"
+##GHdefaults write com.apple.AddressBook ABNameDisplay -int 1
+##GH
+##GH# Sort by last name
+##GHdefaults write com.apple.AddressBook ABNameSortingFormat -string "sortingLastName sortingFirstName"
 
 
 # ==============================================
@@ -249,220 +263,62 @@ defaults write com.apple.iCal "first day of week" -int 1
 defaults write com.apple.iCal "Show time in Month View" -bool true
 
 
-# ==============================================
-# Disable CD & DVD actions
-# ==============================================
-echo "Setting CD & DVD preferences"
-
-# Disable blank CD automatic action.
-defaults write com.apple.digihub com.apple.digihub.blank.cd.appeared -dict action 1
-
-# Disable music CD automatic action.
-defaults write com.apple.digihub com.apple.digihub.cd.music.appeared -dict action 1
-
-# Disable picture CD automatic action.
-defaults write com.apple.digihub com.apple.digihub.cd.picture.appeared -dict action 1
-
-# Disable blank DVD automatic action.
-defaults write com.apple.digihub com.apple.digihub.blank.dvd.appeared -dict action 1
-
-# Disable video DVD automatic action.
-defaults write com.apple.digihub com.apple.digihub.dvd.video.appeared -dict action 1
-
-
-# ==============================================
-# Archive Utility
-# ==============================================
-echo "Setting Archive Utility preferences"
-
-# Move archives to trash after extraction
-defaults write com.apple.archiveutility "dearchive-move-after" -string "~/.Trash"
-
-# Don't reveal extracted items
-defaults write com.apple.archiveutility "dearchive-reveal-after" -bool false
-
-
-# ==============================================
-# Xcode
-# ==============================================
-echo "Setting Xcode preferences"
-
-# Always use spaces for indenting
-defaults write com.apple.dt.Xcode DVTTextIndentUsingTabs -bool false
-
-# Show tab bar
-defaults write com.apple.dt.Xcode AlwaysShowTabBar -bool true
-
-
-# ==============================================
-# BBEdit and TextWrangler
-# ==============================================
-echo "Setting BBEdit and TextWrangler preferences"
-
-function set_barebones_prefs() {
-    defaults write com.barebones.bbedit "$@"
-    defaults write com.barebones.textwrangler "$@"
-}
-
-# Expand tabs to spaces (except in XML)
-set_barebones_prefs EditorAutoExpandTabs -bool true
-set_barebones_prefs EditorAutoExpandTabs_XML -bool false
-
-# In XML, show invisibles and soft wrap text
-set_barebones_prefs EditorShowInvisibleCharacters_XML -bool true
-set_barebones_prefs EditorSoftWrap_XML -bool true
-
-# Default tab width is 4 spaces
-set_barebones_prefs EditorDefaultTabWidth -int 4
-
-# Ruby and YAML tab width is 2 spaces
-set_barebones_prefs EditorDefaultTabWidth_Ruby -int 2
-set_barebones_prefs EditorDefaultTabWidth_YAML -int 2
-
-# Automatically indent
-set_barebones_prefs EditorAutoIndent -bool true
-
-# Don't check spelling
-set_barebones_prefs EditorCheckSpellingAsYouType -bool false
-
-# Don't suggest nonsense when I'm writing code
-set_barebones_prefs IncludeDictionaryWordsInCompletionList -bool false
-
-# Open documents in new window
-set_barebones_prefs NewAndOpenPrefersSharedWindow -bool false
-
-# Do nothing when app becomes active
-set_barebones_prefs StartupAndResumeAction -int 1
-
-# Ensure that file ends with a line break
-set_barebones_prefs EnsureTrailingLineBreak -bool true
-
-# Don't strip trailing white space
-set_barebones_prefs StripTrailingWhitespace -bool false
-
-# Complete with ESC
-set_barebones_prefs UseEscapeKeyAsCompletionTrigger -boolean true
-
-# No default filename extensions
-set_barebones_prefs EnableDefaultFilenameExtensions -bool false
-
-# Double-clicking on a delimiter includes the delimiters in the resulting selection
-set_barebones_prefs BalanceIncludesDelimiters -bool true
-
-# Don't try to reopen files if it requires mounting volumes
-set_barebones_prefs AllowVolumeMount -bool false
-
-# Allow update checking
-set_barebones_prefs SUSoftwareUpdateEnabled -bool true
-set_barebones_prefs SUSoftwareUpdateHasCompletedFirstRun -bool true
-
-# Add some default mappings
-set_barebones_prefs BBSuffixMapOverrides -array-add '{ fileExtension = recipe; languageName = { languageCode = "XML "; languageName = XML; }; }'
-set_barebones_prefs BBSuffixMapOverrides -array-add '{ fileExtension = pkginfo; languageName = { languageCode = "XML "; languageName = XML; }; }'
-set_barebones_prefs BBSuffixMapOverrides -array-add '{ fileExtension = pp; languageName = { languageCode = Ruby; languageName = Ruby; }; }'
-
-CFPreferencesAppSynchronize "com.barebones.bbedit"
-CFPreferencesAppSynchronize "com.barebones.textwrangler"
-
-
-# ==============================================
-# Go2Shell
-# ==============================================
-echo "Setting Go2Shell preferences"
-
-# Custom command
-defaults write com.zipzapmac.Go2Shell "Terminal Command" -string "cd %PATH%"
-CFPreferencesAppSynchronize "com.zipzapmac.Go2Shell"
-
-
-# ==============================================
-# Name Mangler
-# ==============================================
-echo "Setting Name Mangler preferences"
-
-# Concise list
-defaults write com.manytricks.NameMangler "List Style" -int 0
-
-# No icon previews
-defaults write com.manytricks.NameMangler "Show Icon Previews" -bool false
-
-# Quit when window closed
-defaults write com.manytricks.NameMangler "Quit When Closed" -bool true
-
-# Don't clear the list after processing
-defaults write com.manytricks.NameMangler Repopulate -bool false
-
-# No confirmation, just do it
-defaults write com.manytricks.NameMangler Chicken -bool false
-
-CFPreferencesAppSynchronize "com.manytricks.NameMangler"
-
-
-# ==============================================
-# Tweetbot
-# ==============================================
-echo "Setting Tweetbot preferences"
-
-# Use absolute dates
-defaults write com.tapbots.TweetbotMac dateFormatType -int 1
-
-# Display both name and username
-defaults write com.tapbots.TweetbotMac displayNameType -int 3
-
-# Don't pin timeline to top
-defaults write com.tapbots.TweetbotMac streamingPinToTopEnabled -bool false
-
-# Quote format: RT with comment
-defaults write com.tapbots.TweetbotMac quoteFormatType -int 1
-
-# Font size: Medium
-defaults write com.tapbots.TweetbotMac fontSize -int 13
-
-# Don't show status item
-defaults write com.tapbots.TweetbotMac showStatusItem -bool false
-
-# No sounds
-defaults write com.tapbots.TweetbotMac soundType -int 2
-
-# Image Thumbnails: Small
-defaults write com.tapbots.TweetbotMac statusViewImageType -int 1
-
-CFPreferencesAppSynchronize "com.tapbots.TweetbotMac"
-
-# ==============================================
-# VMware Fusion
-# ==============================================
-echo "Setting VMware Fusion preferences"
-
-# Applications menu: Show in Menu Bar: Never
-defaults write com.vmware.fusion showStartMenu3 -int 0
-
-CFPreferencesAppSynchronize "com.vmware.fusion"
-
-# ==============================================
-# f.lux
-# ==============================================
-echo "Setting f.lux preferences"
-FLUX_DOMAIN="org.herf.Flux"
-
-# Location, center of Jyväskylä, Finland
-defaults write "${FLUX_DOMAIN}" location "62.242603,25.747257"
-defaults write "${FLUX_DOMAIN}" locationTextField "Jyv\\U00e4skyl\\U00e4"
-defaults write "${FLUX_DOMAIN}" locationType "L"
-
-# Sunset temperature
-defaults write "${FLUX_DOMAIN}" lateColorTemp -int 6500
-
-# Bedtime temperature
-defaults write "${FLUX_DOMAIN}" nightColorTemp -int 3400
-
-# Wake up at 6.30
-defaults write "${FLUX_DOMAIN}" wakeTime -int 390
-
-# Sleep late on weekends
-defaults write "${FLUX_DOMAIN}" sleepLate -bool true
-
-CFPreferencesAppSynchronize "${FLUX_DOMAIN}"
+##GH# ==============================================
+##GH# Disable CD & DVD actions
+##GH# ==============================================
+##GHecho "Setting CD & DVD preferences"
+##GH
+##GH# Disable blank CD automatic action.
+##GHdefaults write com.apple.digihub com.apple.digihub.blank.cd.appeared -dict action 1
+##GH
+##GH# Disable music CD automatic action.
+##GHdefaults write com.apple.digihub com.apple.digihub.cd.music.appeared -dict action 1
+##GH
+##GH# Disable picture CD automatic action.
+##GHdefaults write com.apple.digihub com.apple.digihub.cd.picture.appeared -dict action 1
+##GH
+##GH# Disable blank DVD automatic action.
+##GHdefaults write com.apple.digihub com.apple.digihub.blank.dvd.appeared -dict action 1
+##GH
+##GH# Disable video DVD automatic action.
+##GHdefaults write com.apple.digihub com.apple.digihub.dvd.video.appeared -dict action 1
+
+
+##GH# ==============================================
+##GH# Archive Utility
+##GH# ==============================================
+##GHecho "Setting Archive Utility preferences"
+##GH
+##GH# Move archives to trash after extraction
+##GHdefaults write com.apple.archiveutility "dearchive-move-after" -string "~/.Trash"
+##GH
+##GH# Don't reveal extracted items
+##GHdefaults write com.apple.archiveutility "dearchive-reveal-after" -bool false
+
+##GH# ==============================================
+##GH# f.lux
+##GH# ==============================================
+##GHecho "Setting f.lux preferences"
+##GHFLUX_DOMAIN="org.herf.Flux"
+##GH
+##GH# Location, center of Jyväskylä, Finland
+##GHdefaults write "${FLUX_DOMAIN}" location "62.242603,25.747257"
+##GHdefaults write "${FLUX_DOMAIN}" locationTextField "Jyv\\U00e4skyl\\U00e4"
+##GHdefaults write "${FLUX_DOMAIN}" locationType "L"
+##GH
+##GH# Sunset temperature
+##GHdefaults write "${FLUX_DOMAIN}" lateColorTemp -int 6500
+##GH
+##GH# Bedtime temperature
+##GHdefaults write "${FLUX_DOMAIN}" nightColorTemp -int 3400
+##GH
+##GH# Wake up at 6.30
+##GHdefaults write "${FLUX_DOMAIN}" wakeTime -int 390
+##GH
+##GH# Sleep late on weekends
+##GHdefaults write "${FLUX_DOMAIN}" sleepLate -bool true
+##GH
+##GHCFPreferencesAppSynchronize "${FLUX_DOMAIN}"
 
 # ==============================================
 # Finder
@@ -502,6 +358,13 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # Use column view
 defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
 
+# Show hidden files as well in Finder
+defaults write com.apple.finder AppleShowAllFiles YES
+
+# Enable "Quit Finder"
+# Enable
+defaults write com.apple.finder QuitMenuItem -bool true
+
 CFPreferencesAppSynchronize "com.apple.finder"
 
 # ==============================================
@@ -510,150 +373,164 @@ CFPreferencesAppSynchronize "com.apple.finder"
 echo "Setting Dock preferences"
 
 # Position (left, bottom, right)
-defaults write com.apple.dock orientation -string "left"
+defaults write com.apple.dock orientation -string "bottom"
 
+# To purge the dock of all the default app icons and start fresh
+defaults delete com.apple.dock persistent-apps
+defaults delete com.apple.dock persistent-others
+# Set dock to autohide
+defaults write com.apple.dock autohide -bool true
+
+
+##GH# ==============================================
+##GH# Safari & WebKit
+##GH# ==============================================
+##GHecho "Setting Safari & WebKit preferences"
+##GH
+##GH# Appearance
+##GH
+##GH# Show status bar
+##GHdefaults write com.apple.Safari ShowStatusBar -bool true
+##GH
+##GH# Show favorites bar
+##GHdefaults write com.apple.Safari ShowFavoritesBar -bool true
+##GHdefaults write com.apple.Safari "ShowFavoritesBar-v2" -bool true
+##GH
+##GH# Don't show tab bar
+##GHdefaults write com.apple.Safari AlwaysShowTabBar -bool false
+
+
+##GH# General settings
+##GH
+##GH# Safari opens with: A new window
+##GHdefaults write com.apple.Safari AlwaysRestoreSessionAtLaunch -bool false
+##GH
+##GH# New windows open with: Empty Page
+##GHdefaults write com.apple.Safari NewWindowBehavior -int 1
+##GH
+##GH# New tabs open with: Empty Page
+##GHdefaults write com.apple.Safari NewTabBehavior -int 1
+##GH
+##GH# Homepage
+##GHdefaults write com.apple.Safari HomePage -string "about:blank"
+##GH
+##GH# Don't open "safe" files after downloading
+##GHdefaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+##GH
+##GH
+##GH# Tabs settings
+##GH
+##GH# Open pages in tabs instead of windows: automatically
+##GHdefaults write com.apple.Safari TabCreationPolicy -int 1
+##GH
+##GH# Don't make new tabs active
+##GHdefaults write com.apple.Safari OpenNewTabsInFront -bool false
+##GH
+##GH# Command-clicking a link creates tabs
+##GHdefaults write com.apple.Safari CommandClickMakesTabs -bool true
+##GH
+##GH
+##GH# Autofill settings
+##GH
+##GH# Don't remember passwords
+##GHdefaults write com.apple.Safari AutoFillPasswords -bool true
+##GH
+##GH
+##GH# Security settings
+##GH
+##GH# Warn About Fraudulent Websites
+##GHdefaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
+##GH
+##GH# Enable plug-ins
+##GHdefaults write com.apple.Safari WebKitPluginsEnabled -bool true
+##GHdefaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2PluginsEnabled -bool true
+##GH
+##GH# Enable Java
+##GHdefaults write com.apple.Safari WebKitJavaEnabled -bool true
+##GHdefaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabled -bool true
+##GH
+##GH# Enable JavaScript
+##GHdefaults write com.apple.Safari WebKitJavaScriptEnabled -bool true
+##GHdefaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptEnabled -bool true
+##GH
+##GH# Block pop-up windows
+##GHdefaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically -bool false
+##GHdefaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically -bool false
+##GH
+##GH# Reading list
+##GHdefaults write com.apple.Safari com.apple.Safari.ReadingListFetcher.WebKit2PluginsEnabled -bool false
+##GHdefaults write com.apple.Safari com.apple.Safari.ReadingListFetcher.WebKit2LoadsImagesAutomatically -bool false
+##GHdefaults write com.apple.Safari com.apple.Safari.ReadingListFetcher.WebKit2LoadsSiteIconsIgnoringImageLoadingPreference -bool true
+##GHdefaults write com.apple.Safari com.apple.Safari.ReadingListFetcher.WebKit2JavaScriptEnabled -bool false
+##GH
+##GH
+##GH# Privacy settings
+##GH
+##GH# Cookies and website data
+##GH# - Always block
+##GH#defaults write com.apple.Safari WebKitStorageBlockingPolicy -int 2
+##GH#defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2StorageBlockingPolicy -int 2
+##GH
+##GH# Website use of location services
+##GH# 0 = Deny without prompting
+##GH# 1 = Prompt for each website once each day
+##GH# 2 = Prompt for each website one time only
+##GHdefaults write com.apple.Safari SafariGeolocationPermissionPolicy -int 0
+##GH
+##GH# Do not track
+##GHdefaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
+##GH
+##GH
+##GH# Notifications
+##GH
+##GH# Don't even ask about the push notifications
+##GHdefaults write com.apple.Safari CanPromptForPushNotifications -bool false
+##GH
+##GH
+##GH# Extensions settings
+##GH
+##GH# Update extensions automatically
+##GHdefaults write com.apple.Safari InstallExtensionUpdatesAutomatically -bool true
+##GH
+##GH
+##GH# Advanced settings
+##GH
+##GH# Disable Safari’s thumbnail cache for History and Top Sites
+##GHdefaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
+##GH
+##GH# Make Safari’s search banners default to Contains instead of Starts With
+##GHdefaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+##GH
+##GH# Enable the Develop menu and the Web Inspector in Safari
+##GHdefaults write com.apple.Safari IncludeDevelopMenu -bool true
+##GHdefaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+##GHdefaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+##GH
+##GH# Add a context menu item for showing the Web Inspector in web views
+##GHdefaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+##GH
+##GHCFPreferencesAppSynchronize "com.apple.Safari"
+
+
+##GH# ==============================================
+##GH# Disk Utility
+##GH# ==============================================
+##GHecho "Setting Disk Utility preferences"
+##GH
+##GH# Enable the debug menu in Disk Utility
+##GHdefaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
+##GHdefaults write com.apple.DiskUtility advanced-image-options -bool true
+##GH
+##GHCFPreferencesAppSynchronize "com.apple.DiskUtility"
 
 # ==============================================
-# Safari & WebKit
+# Skim
 # ==============================================
-echo "Setting Safari & WebKit preferences"
+echo "Setting Skim preferences"
 
-# Appearance
-
-# Show status bar
-defaults write com.apple.Safari ShowStatusBar -bool true
-
-# Show favorites bar
-defaults write com.apple.Safari ShowFavoritesBar -bool true
-defaults write com.apple.Safari "ShowFavoritesBar-v2" -bool true
-
-# Don't show tab bar
-defaults write com.apple.Safari AlwaysShowTabBar -bool false
-
-
-# General settings
-
-# Safari opens with: A new window
-defaults write com.apple.Safari AlwaysRestoreSessionAtLaunch -bool false
-
-# New windows open with: Empty Page
-defaults write com.apple.Safari NewWindowBehavior -int 1
-
-# New tabs open with: Empty Page
-defaults write com.apple.Safari NewTabBehavior -int 1
-
-# Homepage
-defaults write com.apple.Safari HomePage -string "about:blank"
-
-# Don't open "safe" files after downloading
-defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
-
-
-# Tabs settings
-
-# Open pages in tabs instead of windows: automatically
-defaults write com.apple.Safari TabCreationPolicy -int 1
-
-# Don't make new tabs active
-defaults write com.apple.Safari OpenNewTabsInFront -bool false
-
-# Command-clicking a link creates tabs
-defaults write com.apple.Safari CommandClickMakesTabs -bool true
-
-
-# Autofill settings
-
-# Don't remember passwords
-defaults write com.apple.Safari AutoFillPasswords -bool true
-
-
-# Security settings
-
-# Warn About Fraudulent Websites
-defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
-
-# Enable plug-ins
-defaults write com.apple.Safari WebKitPluginsEnabled -bool true
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2PluginsEnabled -bool true
-
-# Enable Java
-defaults write com.apple.Safari WebKitJavaEnabled -bool true
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabled -bool true
-
-# Enable JavaScript
-defaults write com.apple.Safari WebKitJavaScriptEnabled -bool true
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptEnabled -bool true
-
-# Block pop-up windows
-defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically -bool false
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically -bool false
-
-# Reading list
-defaults write com.apple.Safari com.apple.Safari.ReadingListFetcher.WebKit2PluginsEnabled -bool false
-defaults write com.apple.Safari com.apple.Safari.ReadingListFetcher.WebKit2LoadsImagesAutomatically -bool false
-defaults write com.apple.Safari com.apple.Safari.ReadingListFetcher.WebKit2LoadsSiteIconsIgnoringImageLoadingPreference -bool true
-defaults write com.apple.Safari com.apple.Safari.ReadingListFetcher.WebKit2JavaScriptEnabled -bool false
-
-
-# Privacy settings
-
-# Cookies and website data
-# - Always block
-#defaults write com.apple.Safari WebKitStorageBlockingPolicy -int 2
-#defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2StorageBlockingPolicy -int 2
-
-# Website use of location services
-# 0 = Deny without prompting
-# 1 = Prompt for each website once each day
-# 2 = Prompt for each website one time only
-defaults write com.apple.Safari SafariGeolocationPermissionPolicy -int 0
-
-# Do not track
-defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
-
-
-# Notifications
-
-# Don't even ask about the push notifications
-defaults write com.apple.Safari CanPromptForPushNotifications -bool false
-
-
-# Extensions settings
-
-# Update extensions automatically
-defaults write com.apple.Safari InstallExtensionUpdatesAutomatically -bool true
-
-
-# Advanced settings
-
-# Disable Safari’s thumbnail cache for History and Top Sites
-defaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
-
-# Make Safari’s search banners default to Contains instead of Starts With
-defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
-
-# Enable the Develop menu and the Web Inspector in Safari
-defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
-
-# Add a context menu item for showing the Web Inspector in web views
-defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
-
-CFPreferencesAppSynchronize "com.apple.Safari"
-
-
-# ==============================================
-# Disk Utility
-# ==============================================
-echo "Setting Disk Utility preferences"
-
-# Enable the debug menu in Disk Utility
-defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
-defaults write com.apple.DiskUtility advanced-image-options -bool true
-
-CFPreferencesAppSynchronize "com.apple.DiskUtility"
-
+#Skim (3rd party app for pdf viewing)
+# Removes the dialog and defaults to auto reload.
+defaults write -app Skim SKAutoReloadFileUpdate -boolean true
 
 # ==============================================
 # Terminal
@@ -663,20 +540,12 @@ echo "Setting Terminal preferences"
 # ----------------------------------------------
 # Create a new "Basic Improved" profile
 # ----------------------------------------------
-defaults write com.apple.Terminal "Window Settings" -dict-add "Basic Improved" "
+defaults write com.apple.Terminal "Window Settings" -dict-add "Ocean" "
 <dict>
     <key>Font</key>
     <data>
-    YnBsaXN0MDDUAQIDBAUGGBlYJHZlcnNpb25YJG9iamVjdHNZJGFy
-    Y2hpdmVyVCR0b3ASAAGGoKQHCBESVSRudWxs1AkKCwwNDg8QVk5T
-    U2l6ZVhOU2ZGbGFnc1ZOU05hbWVWJGNsYXNzI0AmAAAAAAAAEBCA
-    AoADXlNGTW9uby1SZWd1bGFy0hMUFRZaJGNsYXNzbmFtZVgkY2xh
-    c3Nlc1ZOU0ZvbnSiFRdYTlNPYmplY3RfEA9OU0tleWVkQXJjaGl2
-    ZXLRGhtUcm9vdIABCBEaIy0yNzxCS1JbYmlydHZ4h4yXoKeqs8XI
-    zQAAAAAAAAEBAAAAAAAAABwAAAAAAAAAAAAAAAAAAADP
+    62706c69 73743030 d4010203 04050618 19582476 65727369 6f6e5824 6f626a65 63747359 24617263 68697665 72542474 6f701200 0186a0a4 07081112 55246e75 6c6cd409 0a0b0c0d 0e0f1056 4e535369 7a65584e 5366466c 61677356 4e534e61 6d655624 636c6173 73234030 00000000 00001010 80028003 564d6f6e 61636fd2 13141516 5a24636c 6173736e 616d6558 24636c61 73736573 564e5346 6f6e74a2 1517584e 534f626a 6563745f 100f4e53 4b657965 64417263 68697665 72d11a1b 54726f6f 74800108 111a232d 32373c42 4b525b62 69727476 787f848f 989fa2ab bdc0c500 00000000 00010100 00000000 00001c00 00000000 00000000 00000000 0000c7 
     </data>
-    <key>FontAntialias</key>
-    <true/>
     <key>FontWidthSpacing</key>
     <real>1.004032258064516</real>
     <key>ProfileCurrentVersion</key>
@@ -684,7 +553,7 @@ defaults write com.apple.Terminal "Window Settings" -dict-add "Basic Improved" "
     <key>columnCount</key>
     <integer>100</integer>
     <key>name</key>
-    <string>Basic Improved</string>
+    <string>Ocean</string>
     <key>rowCount</key>
     <integer>45</integer>
     <key>shellExitAction</key>
@@ -697,11 +566,11 @@ defaults write com.apple.Terminal "Window Settings" -dict-add "Basic Improved" "
 # Shell opens with: /bin/bash
 defaults write com.apple.Terminal Shell -string "/bin/bash"
 
-# Set the "Basic Improved" as the default
-defaults write com.apple.Terminal "Startup Window Settings" -string "Basic Improved"
-defaults write com.apple.Terminal "Default Window Settings" -string "Basic Improved"
+# Set the "Ocean" as the default
+defaults write com.apple.Terminal "Startup Window Settings" -string "Ocean"
+defaults write com.apple.Terminal "Default Window Settings" -string "Ocean"
 
-CFPreferencesAppSynchronize "com.apple.Terminal"
+##GH CFPreferencesAppSynchronize "com.apple.Terminal"
 
 
 # ==============================================
@@ -714,16 +583,17 @@ function killallApps() {
     killall "Dock" > /dev/null 2>&1
 
     appsToKill=(
-    "Activity Monitor"
-    "BBEdit"
+#    "Activity Monitor"
+#    "BBEdit"
     "Calendar"
     "Contacts"
     "Dashboard"
-    "Disk Utility"
-    "Safari"
+#    "Disk Utility"
+#    "Safari"
+    "Skim"
     "System Preferences"
-    "TextWrangler"
-    "Xcode"
+#    "TextWrangler"
+#    "Xcode"
     )
 
     for app in "${appsToKill[@]}"

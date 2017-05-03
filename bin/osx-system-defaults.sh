@@ -10,6 +10,15 @@
 # ==============================================
 
 ### Adapted by Gus Hart, May 2017 (Yosemite)
+### Need to run this with su privileges
+
+# ==============================================
+# Computer and Network names
+# ==============================================
+
+# Replace the last string with the desired name
+defaults write /Library/Preferences/SystemConfiguration/preferences.plist LocalHostName "GLWH"
+defaults write /Library/Preferences/SystemConfiguration/preferences.plist ComputerName "GLWH"
 
 # ==============================================
 # Date & Time
@@ -75,10 +84,10 @@ defaults write /Library/Preferences/com.apple.loginwindow SHOWFULLNAME -bool tru
 # Show shut down etc. buttons
 defaults write /Library/Preferences/com.apple.loginwindow PowerOffDisabled -bool false
 
-##GH # Show input menu on login (so you can tell if it's dvorak or not
+# Show input menu on login (so you can tell if it's dvorak or not)
 defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool true
 
-##GH Show any password hints
+# Show any password hints
 defaults write /Library/Preferences/com.apple.loginwindow RetriesUntilHint -int 1
 
 ##GH# Allow fast user switching
@@ -92,15 +101,14 @@ defaults write /Library/Preferences/com.apple.loginwindow RetriesUntilHint -int 
 # Set keyboard preferences
 # ==============================================
 defaults write /Library/Preferences/com.apple.HIToolbox AppleCurrentKeyboardLayoutInputSourceID "com.apple.keylayout.US"
-##GH defaults write /Library/Preferences/com.apple.HIToolbox AppleDefaultAsciiInputSource -dict InputSourceKind "Keyboard Layout" "KeyboardLayout ID" -int 17 "KeyboardLayout Name" Finnish
 
 # Delete the default layouts (US)
 defaults delete /Library/Preferences/com.apple.HIToolbox AppleEnabledInputSources
 
-# Enable Finnish layout
-defaults write /Library/Preferences/com.apple.HIToolbox AppleEnabledInputSources -array '{ InputSourceKind = "Keyboard Layout"; "KeyboardLayout ID" = 17; "KeyboardLayout Name" = Finnish; }'
-defaults write /Library/Preferences/com.apple.HIToolbox AppleInputSourceHistory -array '{ InputSourceKind = "Keyboard Layout"; "KeyboardLayout ID" = 17; "KeyboardLayout Name" = Finnish; }'
-defaults write /Library/Preferences/com.apple.HIToolbox AppleSelectedInputSources -array '{ InputSourceKind = "Keyboard Layout"; "KeyboardLayout ID" = 17; "KeyboardLayout Name" = Finnish; }'
+# Enable Dvorak and US layout
+defaults write /Library/Preferences/com.apple.HIToolbox AppleEnabledInputSources -array '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>0</integer><key>KeyboardLayout Name</key><string>U.S.</string></dict>'
+
+defaults write /Library/Preferences/com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>16300</integer><key>KeyboardLayout Name</key><string>Dvorak</string></dict>'
 
 # Enable key repeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool FALSE
@@ -108,8 +116,11 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool FALSE
 # Set keyboard repeat rate
 defaults write NSGlobalDomain KeyRepeat -int 2
 
-# Set scroll direction
-defaults write /Library/Preferences/.GlobalPreferences com.apple.swipescrolldirection -bool false
+# shorten the delay until repeat
+defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms)
+
+##GH# Set scroll direction
+##GHdefaults write /Library/Preferences/.GlobalPreferences com.apple.swipescrolldirection -bool false
 
 
 # ==============================================
@@ -120,21 +131,21 @@ defaults write /Library/Preferences/.GlobalPreferences com.apple.swipescrolldire
 defaults write /Library/Preferences/com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
 
-# ==============================================
-# Make links to useful apps
-# ==============================================
-
-# Archive Utility
-ln -s "/System/Library/CoreServices/Archive Utility.app" "/Applications/Utilities/Archive Utility.app"
-
-# Directory Utility
-ln -s "/System/Library/CoreServices/Directory Utility.app" "/Applications/Utilities/Directory Utility.app"
-
-# Screen Sharing
-ln -s "/System/Library/CoreServices/Screen Sharing.app" "/Applications/Utilities/Screen Sharing.app"
-
-# Ticket Viewer
-ln -s "/System/Library/CoreServices/Ticket Viewer.app" "/Applications/Utilities/Ticket Viewer.app"
-
-
-echo "Done. Note that these changes require a restart to take effect."
+##GH# ==============================================
+##GH# Make links to useful apps
+##GH# ==============================================
+##GH
+##GH# Archive Utility
+##GHln -s "/System/Library/CoreServices/Archive Utility.app" "/Applications/Utilities/Archive Utility.app"
+##GH
+##GH# Directory Utility
+##GHln -s "/System/Library/CoreServices/Directory Utility.app" "/Applications/Utilities/Directory Utility.app"
+##GH
+##GH# Screen Sharing
+##GHln -s "/System/Library/CoreServices/Screen Sharing.app" "/Applications/Utilities/Screen Sharing.app"
+##GH
+##GH# Ticket Viewer
+##GHln -s "/System/Library/CoreServices/Ticket Viewer.app" "/Applications/Utilities/Ticket Viewer.app"
+##GH
+##GH
+##GHecho "Done. Note that these changes require a restart to take effect."

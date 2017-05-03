@@ -17,8 +17,14 @@
 # ==============================================
 
 # Replace the last string with the desired name
-defaults write /Library/Preferences/SystemConfiguration/preferences.plist LocalHostName "GLWH"
-defaults write /Library/Preferences/SystemConfiguration/preferences.plist ComputerName "GLWH"
+# This next two things don't actually seem to change the name of the computer that is shown
+# in System Settings: Computer Name 
+#defaults write /Library/Preferences/SystemConfiguration/preferences.plist LocalHostName "GLWH"
+#defaults write /Library/Preferences/SystemConfiguration/preferences.plist ComputerName "GLWH"
+# But this seems to work
+scutil --set ComputerName GLWH
+# LocalHostName Only for Bonjour? Do I need this?
+#scutil --set LocalHostName GLWH
 
 # ==============================================
 # Date & Time

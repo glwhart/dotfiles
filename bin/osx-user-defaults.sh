@@ -381,6 +381,8 @@ defaults delete com.apple.dock persistent-others
 # Set dock to autohide
 defaults write com.apple.dock autohide -bool true
 
+# Set icon size for dock icon
+defaults write com.apple.dock tilesize -int 34
 
 ##GH# ==============================================
 ##GH# Safari & WebKit
